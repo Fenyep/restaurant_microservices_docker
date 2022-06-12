@@ -1,0 +1,46 @@
+version: '3.3' # defining the version 
+
+# starting to two containers
+services:
+  # mongoDB service
+  # service name(it can anything)
+  mongo_db2: 
+    # name of the container
+    container_name: db_container2
+    # providing an image
+    image: mongo:latest
+    # security policy. Restart the container if it fails
+    restart: always
+    # here i map the port so as to able to run my contenairized docker image running on port *27017* using the port *2717*
+    # we can achieve this using the command -> mongosh --port 2717
+    ports:
+      - 2718:27017
+    # volumes to persits the datas so as to conserve it's state on system reboot
+    volumes:
+      - mongo_db2:/data/db
+
+  # Node API service
+  api:
+    # Here instead of providing an image, we will build the container directly from our dockerfile(. represents the directory of the Dockerfile)
+    build: .
+    # we expose ports and map them (local machine port i will use to execute the container):(docker port on which the nodejs app runs)
+    ports:
+      - 7000:9000
+    # To persist the changes of my nodes application, i define this volume
+    # it map the current local directory (. = root directory) to (/usr/src/app/ = defined in the docker file workdir)
+    volumes:
+      - .:/usr/src/app/
+    # Here we define our environment variables to be used
+    environment:
+      PORT: 9000
+      # we dont use localhost here because we are now on a docker container and
+      MONGO_URI: mongodb://mongo_db2:27017
+      DB_NAME: restaurant
+      NAME: wangue
+    # Here we define that the mongo must be started before the nodejs container
+    depends_on: 
+      - mongo_db2 
+
+# Here we define the volumes of the mongo_db app
+volumes:
+  mongo_db2: {}

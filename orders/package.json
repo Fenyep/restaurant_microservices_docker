@@ -1,0 +1,22 @@
+{
+  "name": "restaurant_order_service",
+  "version": "1.0.0",
+  "description": "food sell restaurant app order_service to be deployed in a docker container",
+  "main": "orders.js",
+  "scripts": {
+    "start": "node orders.js",
+    "dev": "nodemon ./orders.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wangue",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
